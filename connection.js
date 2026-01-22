@@ -1,12 +1,17 @@
 const mysql = require('mysql2');
 const util = require("util");
 
-const conn = mysql.createConnection({
-    host: "bjn3gt2lzgeqazconyqa-mysql.services.clever-cloud.com",
-    user: "uzhb3m9wd9gagnkc",
-    password: "7mXs2rAIkvyoGJvtNqki",
-    database: "bjn3gt2lzgeqazconyqa"
+
+
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 3306
 });
+
+
 
 
 const exe = util.promisify(conn.query).bind(conn);
