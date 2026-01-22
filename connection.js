@@ -1,9 +1,8 @@
-const mysql = require('mysql2');
+const mysql = require("mysql2");
 const util = require("util");
 
-
-
-const connection = mysql.createConnection({
+// Create connection
+const conn = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -11,10 +10,8 @@ const connection = mysql.createConnection({
   port: process.env.DB_PORT || 3306
 });
 
-
-
-
+// Promisify queries
 const exe = util.promisify(conn.query).bind(conn);
 
-module.exports = exe;
+module.exports = { conn, exe };
 
