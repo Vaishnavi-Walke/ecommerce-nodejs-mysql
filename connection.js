@@ -1,17 +1,46 @@
-const mysql = require("mysql2");
+// const mysql = require('mysql2');
+// const util = require("util");
+
+// const conn = mysql.createConnection({
+//     host:"bjn3gt2lzgeqazconyqa-mysql.services.clever-cloud.com",
+//     user:"uzhb3m9wd9gagnkc",
+//     password:"7mXs2rAIkvyoGJvtNqki",
+//     database:"bjn3gt2lzgeqazconyqa",
+//     port:3306
+// })
+
+// const exe = util.promisify(conn.query).bind(conn);
+
+// module.exports = exe;
+
+
+
+const mysql = require('mysql2');
 const util = require("util");
 
-// Create connection
 const conn = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  port: process.env.DB_PORT || 3306
+    host: "bjn3gt2lzgeqazconyqa-mysql.services.clever-cloud.com",
+    user: "uzhb3m9wd9gagnkc",
+    password: "7mXs2rAIkvyoGJvtNqki",
+    database: "bjn3gt2lzgeqazconyqa",
+    port: 3306,
+    ssl: { rejectUnauthorized: false } // ⭐ required for Clever Cloud
 });
 
-// Promisify queries
+// try connecting when app starts
+conn.connect((err) => {
+    if (err) {
+        console.error("❌ DB Connection Failed:", err.message);
+    } else {
+        console.log("✅ MySQL Connected");
+    }
+});
+
+// prevent app crash on runtime DB errors
+conn.on("error", (err) => {
+    console.error("💥 MySQL Error:", err.message);
+});
+
 const exe = util.promisify(conn.query).bind(conn);
 
-module.exports = { conn, exe };
-
+module.exports = exe;
